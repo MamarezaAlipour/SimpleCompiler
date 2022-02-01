@@ -1,0 +1,11 @@
+Makefile
+*.log
+*.user
+*.Debug
+*.Release
+*.autosave
+*.o
+*.a
+*.exe
+*.dll
+*.stash
