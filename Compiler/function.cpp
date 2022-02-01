@@ -2,8 +2,7 @@
 
 namespace x86 {
 
-	Function::Function() {
-	}
+	Function::Function() {}
 
 	Function::Function(Function&& f) : code(std::move(f.code)) {}
 
