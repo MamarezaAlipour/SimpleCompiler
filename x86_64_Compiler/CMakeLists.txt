@@ -1,0 +1,8 @@
+file(GLOB_RECURSE X86_64_COMPILER_SRC ${CMAKE_SOURCE_DIR} *.cpp *.hpp)
+
+add_library(${X86_64_COMPILER} STATIC
+    ${X86_64_COMPILER_SRC})
+
+target_include_directories(${X86_64_COMPILER}
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
