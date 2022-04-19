@@ -17,12 +17,12 @@ namespace x86 {
 		: name("")
 		, offset(offset) {}
 
-	Compiler::SymRef::SymRef(const SymRef& ref)
+	Compiler::SymRef::SymRef(SymRef const& ref)
 		: name(ref.name)
 		, type(ref.type)
 		, offset(ref.offset) {}
 
-	Compiler::SymRef::SymRef(const std::string name, SymRefType type, int offset)
+	Compiler::SymRef::SymRef(std::string const name, SymRefType type, int offset)
 		: name(name)
 		, type(type)
 		, offset(offset) {}
@@ -46,7 +46,7 @@ namespace x86 {
 		, base(0)
 		, ref(disp) {}
 
-	Compiler::MemRef::MemRef(byte mod, byte rm, const SymRef& ref)
+	Compiler::MemRef::MemRef(byte mod, byte rm, SymRef const& ref)
 		: mod(mod)
 		, rm(rm)
 		, scale(0)
@@ -70,7 +70,7 @@ namespace x86 {
 		, ref(disp) {}
 
 	Compiler::MemRef::MemRef(byte mod, byte rm, byte scale, byte index, byte base,
-							 const SymRef& ref)
+							 SymRef const& ref)
 		: mod(mod)
 		, rm(rm)
 		, scale(scale)
@@ -78,44 +78,44 @@ namespace x86 {
 		, base(base)
 		, ref(ref) {}
 
-	void Compiler::rdata(const std::string& name, const byte* data, uint size) {
+	void Compiler::rdata(std::string const& name, byte const* data, uint size) {
 		uint offset = section(RDATA).size();
 		section(RDATA).push(data, size);
 		pushSymbol(name, ".rdata", offset);
 	}
 
-	void Compiler::data(const std::string& name, const byte* data, uint size) {
+	void Compiler::data(std::string const& name, byte const* data, uint size) {
 		uint offset = section(DATA).size();
 		section(DATA).push(data, size);
 		pushSymbol(name, ".data", offset);
 	}
 
-	void Compiler::bss(const std::string& name, uint size) {
+	void Compiler::bss(std::string const& name, uint size) {
 		uint offset = section(BSS).size();
 		section(BSS).allocate(size);
 		pushSymbol(name, ".bss", offset);
 	}
 
-	void Compiler::externalFunction(const std::string& name) {
+	void Compiler::externalFunction(std::string const& name) {
 		pushSymbol(name, "_" + name, 0);
 		externFuncs << name;
 	}
 
-	void Compiler::externalVariable(const std::string& name) {
+	void Compiler::externalVariable(std::string const& name) {
 		pushSymbol(name, "_" + name, 0);
 		externVars << name;
 	}
 
-	void Compiler::function(const std::string& name) {
+	void Compiler::function(std::string const& name) {
 		pushSymbol(name, ".text", section(TEXT).size());
 		funcs << name;
 	}
 
-	Compiler::SymRef Compiler::abs(const std::string& name) const {
+	Compiler::SymRef Compiler::abs(std::string const& name) const {
 		return {name, RefAbs, 0};
 	}
 
-	Compiler::SymRef Compiler::rel(const std::string& name) const {
+	Compiler::SymRef Compiler::rel(std::string const& name) const {
 		return {name, RefRel, 0};
 	}
 
@@ -142,7 +142,7 @@ namespace x86 {
 		}
 	}
 
-	Compiler::MemRef Compiler::ref(const SymRef& ref, Register reg) const {
+	Compiler::MemRef Compiler::ref(SymRef const& ref, Register reg) const {
 		if (reg == ESP)
 			return MemRef(Disp32, 4, 1, reg, reg, ref);
 		else
@@ -153,7 +153,7 @@ namespace x86 {
 		return MemRef(Disp0, 5, disp);
 	}
 
-	Compiler::MemRef Compiler::ref(const SymRef& ref) const {
+	Compiler::MemRef Compiler::ref(SymRef const& ref) const {
 		return MemRef(Disp0, 5, ref);
 	}
 
@@ -180,7 +180,7 @@ namespace x86 {
 		}
 	}
 
-	Compiler::MemRef Compiler::ref(const SymRef& ref, Register base, Register index,
+	Compiler::MemRef Compiler::ref(SymRef const& ref, Register base, Register index,
 								   byte scale) const {
 		if (index == ESP)
 			throw std::runtime_error("%esp cannot be an index");
@@ -195,7 +195,7 @@ namespace x86 {
 			return MemRef(Disp0, 4, scale, index, 5, disp);
 	}
 
-	Compiler::MemRef Compiler::ref(const SymRef& ref, Register index, byte scale) const {
+	Compiler::MemRef Compiler::ref(SymRef const& ref, Register index, byte scale) const {
 		if (index == ESP)
 			throw std::runtime_error("%esp cannot be an index");
 		else
@@ -209,7 +209,7 @@ namespace x86 {
 			return MemRef(Disp0, 4, scale, index, 5);
 	}
 
-	void Compiler::relocate(const std::string& name, int value) {
+	void Compiler::relocate(std::string const& name, int value) {
 		for (auto& reloc : relocs)
 			if (reloc.name == name) {
 				if (reloc.type == RefAbs)
