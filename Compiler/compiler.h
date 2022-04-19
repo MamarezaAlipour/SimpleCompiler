@@ -403,8 +403,8 @@ namespace x86 {
 
 			SymRef();
 			SymRef(int offset);
-			SymRef(const SymRef& ref);
-			SymRef(const std::string name, SymRefType type, int offset);
+			SymRef(SymRef const& ref);
+			SymRef(std::string const name, SymRefType type, int offset);
 
 			SymRef operator+(int offset) const;
 		};
@@ -426,10 +426,10 @@ namespace x86 {
 
 			MemRef(byte mod, byte rm);
 			MemRef(byte mod, byte rm, int disp);
-			MemRef(byte mod, byte rm, const SymRef& ref);
+			MemRef(byte mod, byte rm, SymRef const& ref);
 			MemRef(byte mod, byte rm, byte scale, byte index, byte base);
 			MemRef(byte mod, byte rm, byte scale, byte index, byte base, int disp);
-			MemRef(byte mod, byte rm, byte scale, byte index, byte base, const SymRef& ref);
+			MemRef(byte mod, byte rm, byte scale, byte index, byte base, SymRef const& ref);
 		};
 
 		std::map<SectionID, ByteArray> sections;
@@ -447,148 +447,148 @@ namespace x86 {
 		enum Mod { Disp0, Disp8, Disp32, Reg };
 
 	  public:
-		void rdata(const std::string& name, const byte* data, uint size);
+		void rdata(std::string const& name, byte const* data, uint size);
 
 		template <class T>
-		void rdata(const std::string& name, T data);
+		void rdata(std::string const& name, T data);
 
-		void data(const std::string& name, const byte* data, uint size);
+		void data(std::string const& name, byte const* data, uint size);
 
 		template <class T>
-		void data(const std::string& name, T data);
+		void data(std::string const& name, T data);
 
-		void bss(const std::string& name, uint size);
+		void bss(std::string const& name, uint size);
 
-		void externalFunction(const std::string& name);
-		void externalVariable(const std::string& name);
+		void externalFunction(std::string const& name);
+		void externalVariable(std::string const& name);
 
-		void function(const std::string& name);
+		void function(std::string const& name);
 
-		SymRef abs(const std::string& name) const;
-		SymRef rel(const std::string& name) const;
+		SymRef abs(std::string const& name) const;
+		SymRef rel(std::string const& name) const;
 
 		MemRef ref(Register reg) const;
 		MemRef ref(int disp, Register reg) const;
-		MemRef ref(const SymRef& ref, Register reg) const;
+		MemRef ref(SymRef const& ref, Register reg) const;
 		MemRef ref(int disp) const;
-		MemRef ref(const SymRef& ref) const;
+		MemRef ref(SymRef const& ref) const;
 		MemRef ref(Register base, Register index, byte scale) const;
 		MemRef ref(int disp, Register base, Register index, byte scale) const;
-		MemRef ref(const SymRef& ref, Register base, Register index, byte scale) const;
+		MemRef ref(SymRef const& ref, Register base, Register index, byte scale) const;
 		MemRef ref(int disp, Register index, byte scale) const;
-		MemRef ref(const SymRef& ref, Register index, byte scale) const;
+		MemRef ref(SymRef const& ref, Register index, byte scale) const;
 		MemRef ref(Register index, byte scale) const;
 
-		void relocate(const std::string& name, int value);
+		void relocate(std::string const& name, int value);
 
 		void constant(byte value);
 		void constant(int value);
 		void constant(double value);
 
 		void add(int imm, Register dst);
-		void add(const SymRef& ref, Register dst);
-		void addb(byte imm, const MemRef& dst);
-		void add(int imm, const MemRef& dst);
-		void add(const SymRef& ref, const MemRef& dst);
-		void add(Register src, const MemRef& dst);
-		void add(const MemRef& src, Register dst);
+		void add(SymRef const& ref, Register dst);
+		void addb(byte imm, MemRef const& dst);
+		void add(int imm, MemRef const& dst);
+		void add(SymRef const& ref, MemRef const& dst);
+		void add(Register src, MemRef const& dst);
+		void add(MemRef const& src, Register dst);
 
 		void _and(int imm, Register reg);
 
 		void call(int disp);
-		void call(const SymRef& ref);
+		void call(SymRef const& ref);
 		void call(Register reg);
-		void call(const MemRef& ref);
+		void call(MemRef const& ref);
 
-		void fadds(const MemRef& ref);
-		void faddl(const MemRef& ref);
+		void fadds(MemRef const& ref);
+		void faddl(MemRef const& ref);
 		void fadd(FPURegister src, FPURegister dst);
 		void faddp(FPURegister dst);
 		void faddp();
-		void fiaddl(const MemRef& ref);
+		void fiaddl(MemRef const& ref);
 
-		void fdivs(const MemRef& ref);
-		void fdivl(const MemRef& ref);
+		void fdivs(MemRef const& ref);
+		void fdivl(MemRef const& ref);
 		void fdiv(FPURegister src, FPURegister dst);
 		void fdivp(FPURegister dst);
 		void fdivp();
-		void fidivl(const MemRef& ref);
+		void fidivl(MemRef const& ref);
 
-		void fdivrs(const MemRef& ref);
-		void fdivrl(const MemRef& ref);
+		void fdivrs(MemRef const& ref);
+		void fdivrl(MemRef const& ref);
 		void fdivr(FPURegister src, FPURegister dst);
 		void fdivrp(FPURegister dst);
 		void fdivrp();
-		void fidivrl(const MemRef& ref);
+		void fidivrl(MemRef const& ref);
 
-		void flds(const MemRef& ref);
-		void fldl(const MemRef& ref);
+		void flds(MemRef const& ref);
+		void fldl(MemRef const& ref);
 		void fld(FPURegister reg);
 
-		void fmuls(const MemRef& ref);
-		void fmull(const MemRef& ref);
+		void fmuls(MemRef const& ref);
+		void fmull(MemRef const& ref);
 		void fmul(FPURegister src, FPURegister dst);
 		void fmulp(FPURegister dst);
 		void fmulp();
-		void fimull(const MemRef& ref);
+		void fimull(MemRef const& ref);
 
-		void fsts(const MemRef& ref);
-		void fstl(const MemRef& ref);
+		void fsts(MemRef const& ref);
+		void fstl(MemRef const& ref);
 		void fst(FPURegister reg);
 
-		void fstps(const MemRef& ref);
-		void fstpl(const MemRef& ref);
+		void fstps(MemRef const& ref);
+		void fstpl(MemRef const& ref);
 		void fstp(FPURegister reg);
 
-		void fsubs(const MemRef& ref);
-		void fsubl(const MemRef& ref);
+		void fsubs(MemRef const& ref);
+		void fsubl(MemRef const& ref);
 		void fsub(FPURegister src, FPURegister dst);
 		void fsubp(FPURegister dst);
 		void fsubp();
-		void fisubl(const MemRef& ref);
+		void fisubl(MemRef const& ref);
 
-		void fsubrs(const MemRef& ref);
-		void fsubrl(const MemRef& ref);
+		void fsubrs(MemRef const& ref);
+		void fsubrl(MemRef const& ref);
 		void fsubr(FPURegister src, FPURegister dst);
 		void fsubrp(FPURegister dst);
 		void fsubrp();
-		void fisubrl(const MemRef& ref);
+		void fisubrl(MemRef const& ref);
 
-		void lea(const MemRef& src, Register dst);
+		void lea(MemRef const& src, Register dst);
 
 		void leave();
 
 		void mov(Register src, Register dst);
 		void mov(int imm, Register dst);
-		void mov(const SymRef& src, Register dst);
-		void mov(int imm, const MemRef& dst);
-		void mov(const SymRef& src, const MemRef& dst);
-		void mov(Register src, const MemRef& dst);
-		void mov(const MemRef& src, Register dst);
+		void mov(SymRef const& src, Register dst);
+		void mov(int imm, MemRef const& dst);
+		void mov(SymRef const& src, MemRef const& dst);
+		void mov(Register src, MemRef const& dst);
+		void mov(MemRef const& src, Register dst);
 
 		void nop();
 
 		void pop(Register reg);
-		void pop(const MemRef& ref);
+		void pop(MemRef const& ref);
 
 		void push(Register reg);
-		void push(const MemRef& ref);
+		void push(MemRef const& ref);
 		void push(int value);
-		void push(const SymRef& ref);
+		void push(SymRef const& ref);
 
 		void ret();
 
 		void sub(int imm, Register dst);
-		void sub(const SymRef& ref, Register dst);
-		void subb(byte imm, const MemRef& dst);
-		void sub(int imm, const MemRef& dst);
-		void sub(const SymRef& ref, const MemRef& dst);
-		void sub(Register src, const MemRef& dst);
-		void sub(const MemRef& src, Register dst);
+		void sub(SymRef const& ref, Register dst);
+		void subb(byte imm, MemRef const& dst);
+		void sub(int imm, MemRef const& dst);
+		void sub(SymRef const& ref, MemRef const& dst);
+		void sub(Register src, MemRef const& dst);
+		void sub(MemRef const& src, Register dst);
 
 		ByteArray writeOBJ() const;
 		ByteArray writeEXE() const;
-		ByteArray writeDLL(const std::string& name) const;
+		ByteArray writeDLL(std::string const& name) const;
 
 		const ByteArray& getCode() const;
 
@@ -598,15 +598,15 @@ namespace x86 {
 		void instr(byte op);
 		void instr(byte op, byte imm);
 		void instr(byte op, int imm);
-		void instr(byte op, const SymRef& ref);
+		void instr(byte op, SymRef const& ref);
 		void instr(byte op, byte reg, Register rm);
 		void instr(byte op, byte reg, Register rm, byte imm);
 		void instr(byte op, byte reg, Register rm, int imm);
-		void instr(byte op, byte reg, Register rm, const SymRef& ref);
-		void instr(byte op, byte reg, const MemRef& rm);
-		void instr(byte op, byte reg, const MemRef& rm, byte imm);
-		void instr(byte op, byte reg, const MemRef& rm, int imm);
-		void instr(byte op, byte reg, const MemRef& rm, const SymRef& ref);
+		void instr(byte op, byte reg, Register rm, SymRef const& ref);
+		void instr(byte op, byte reg, MemRef const& rm);
+		void instr(byte op, byte reg, MemRef const& rm, byte imm);
+		void instr(byte op, byte reg, MemRef const& rm, int imm);
+		void instr(byte op, byte reg, MemRef const& rm, SymRef const& ref);
 
 		static byte composeByte(byte a, byte b, byte c);
 
@@ -618,9 +618,9 @@ namespace x86 {
 		ByteArray& section(SectionID id);
 		const ByteArray& section(SectionID id) const;
 
-		bool isSymbolDefined(const std::string& name) const;
-		void pushSymbol(const std::string& name, const std::string& baseSymbol, uint offset);
-		void pushReloc(const Reloc& reloc);
+		bool isSymbolDefined(std::string const& name) const;
+		void pushSymbol(std::string const& name, std::string const& baseSymbol, uint offset);
+		void pushReloc(Reloc const& reloc);
 
 		static bool isByte(int value);
 	};
@@ -635,23 +635,23 @@ namespace x86 {
 	}
 
 	template <class T>
-	inline void Compiler::rdata(const std::string& name, T data) {
-		rdata(name, (const byte*)&data, sizeof(data));
+	inline void Compiler::rdata(std::string const& name, T data) {
+		rdata(name, (byte const*)&data, sizeof(data));
 	}
 
 	template <>
-	inline void Compiler::rdata(const std::string& name, const char* data) {
-		rdata(name, (const byte*)data, strlen(data));
+	inline void Compiler::rdata(std::string const& name, char const* data) {
+		rdata(name, (byte const*)data, strlen(data));
 	}
 
 	template <class T>
-	inline void Compiler::data(const std::string& name, T data) {
-		Compiler::data(name, (const byte*)&data, sizeof(data));
+	inline void Compiler::data(std::string const& name, T data) {
+		Compiler::data(name, (byte const*)&data, sizeof(data));
 	}
 
 	template <>
-	inline void Compiler::data(const std::string& name, const char* data) {
-		Compiler::data(name, (const byte*)data, strlen(data));
+	inline void Compiler::data(std::string const& name, char const* data) {
+		Compiler::data(name, (byte const*)data, strlen(data));
 	}
 
 	inline bool Compiler::isByte(int value) {
