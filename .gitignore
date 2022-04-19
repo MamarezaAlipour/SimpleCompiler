@@ -9,3 +9,4 @@ Makefile
 *.exe
 *.dll
 *.stash
+/.vs
