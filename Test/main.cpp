@@ -3,7 +3,7 @@
 #include "compiler.h"
 
 int main() {
-	x86::Compiler c{};
+	x86::Compiler c {};
 
 	// c.rdata("string", "Hello, World!");
 
