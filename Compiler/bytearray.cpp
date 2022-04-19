@@ -1,7 +1,7 @@
 #include "bytearray.h"
 
-#include <memory>
 #include <fstream>
+#include <memory>
 
 uint ByteArray::initialCapacity = 1;
 
@@ -14,11 +14,13 @@ ByteArray::ByteArray()
 	, capacity(0)
 	, data(0) {}
 
-ByteArray::ByteArray(const ByteArray& array) : data(0) {
+ByteArray::ByteArray(const ByteArray& array)
+	: data(0) {
 	*this = array;
 }
 
-ByteArray::ByteArray(ByteArray&& array) : data(0) {
+ByteArray::ByteArray(ByteArray&& array)
+	: data(0) {
 	*this = std::move(array);
 }
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <list>
-#include <vector>
-#include <string>
-#include <iomanip>
-#include <sstream>
 #include <cmath>
+#include <iomanip>
+#include <list>
+#include <sstream>
+#include <string>
+#include <vector>
 
 typedef unsigned char byte;
 typedef unsigned int uint;

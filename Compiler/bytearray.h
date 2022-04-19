@@ -8,7 +8,7 @@ class ByteArray {
 	uint size, capacity;
 	byte* data;
 
-public:
+  public:
 	static void setInitialCapacity(uint initialCapacity);
 
 	ByteArray();

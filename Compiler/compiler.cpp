@@ -2,34 +2,30 @@
 
 #include "common.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <algorithm>
 #include <exception>
 
 namespace x86 {
 
 	Compiler::SymRef::SymRef()
 		: name("")
-		, offset(0) {
-	}
+		, offset(0) {}
 
 	Compiler::SymRef::SymRef(int offset)
 		: name("")
-		, offset(offset) {
-	}
+		, offset(offset) {}
 
 	Compiler::SymRef::SymRef(const SymRef& ref)
 		: name(ref.name)
 		, type(ref.type)
-		, offset(ref.offset) {
-	}
+		, offset(ref.offset) {}
 
 	Compiler::SymRef::SymRef(const std::string name, SymRefType type, int offset)
 		: name(name)
 		, type(type)
-		, offset(offset) {
-	}
+		, offset(offset) {}
 
 	Compiler::SymRef Compiler::SymRef::operator+(int offset) const {
 		return SymRef(name, type, this->offset + offset);
@@ -40,8 +36,7 @@ namespace x86 {
 		, rm(rm)
 		, scale(0)
 		, index(0)
-		, base(0) {
-	}
+		, base(0) {}
 
 	Compiler::MemRef::MemRef(byte mod, byte rm, int disp)
 		: mod(mod)
@@ -49,8 +44,7 @@ namespace x86 {
 		, scale(0)
 		, index(0)
 		, base(0)
-		, ref(disp) {
-	}
+		, ref(disp) {}
 
 	Compiler::MemRef::MemRef(byte mod, byte rm, const SymRef& ref)
 		: mod(mod)
@@ -58,16 +52,14 @@ namespace x86 {
 		, scale(0)
 		, index(0)
 		, base(0)
-		, ref(ref) {
-	}
+		, ref(ref) {}
 
 	Compiler::MemRef::MemRef(byte mod, byte rm, byte scale, byte index, byte base)
 		: mod(mod)
 		, rm(rm)
 		, scale(scale)
 		, index(index)
-		, base(base) {
-	}
+		, base(base) {}
 
 	Compiler::MemRef::MemRef(byte mod, byte rm, byte scale, byte index, byte base, int disp)
 		: mod(mod)
@@ -75,17 +67,16 @@ namespace x86 {
 		, scale(scale)
 		, index(index)
 		, base(base)
-		, ref(disp) {
-	}
+		, ref(disp) {}
 
-	Compiler::MemRef::MemRef(byte mod, byte rm, byte scale, byte index, byte base, const SymRef& ref)
+	Compiler::MemRef::MemRef(byte mod, byte rm, byte scale, byte index, byte base,
+							 const SymRef& ref)
 		: mod(mod)
 		, rm(rm)
 		, scale(scale)
 		, index(index)
 		, base(base)
-		, ref(ref) {
-	}
+		, ref(ref) {}
 
 	void Compiler::rdata(const std::string& name, const byte* data, uint size) {
 		uint offset = section(RDATA).size();
@@ -121,11 +112,11 @@ namespace x86 {
 	}
 
 	Compiler::SymRef Compiler::abs(const std::string& name) const {
-		return { name, RefAbs, 0 };
+		return {name, RefAbs, 0};
 	}
 
 	Compiler::SymRef Compiler::rel(const std::string& name) const {
-		return { name, RefRel, 0 };
+		return {name, RefRel, 0};
 	}
 
 	Compiler::MemRef Compiler::ref(Register reg) const {
@@ -143,8 +134,7 @@ namespace x86 {
 				return MemRef(Disp8, 4, 1, reg, reg, disp);
 			else
 				return MemRef(Disp8, reg, disp);
-		}
-		else {
+		} else {
 			if (reg == ESP)
 				return MemRef(Disp32, 4, 1, reg, reg, disp);
 			else
@@ -182,8 +172,7 @@ namespace x86 {
 				throw std::runtime_error("%esp cannot be an index");
 			else
 				return MemRef(Disp8, 4, scale, index, base, disp);
-		}
-		else {
+		} else {
 			if (index == ESP)
 				throw std::runtime_error("%esp cannot be an index");
 			else
@@ -191,7 +180,8 @@ namespace x86 {
 		}
 	}
 
-	Compiler::MemRef Compiler::ref(const SymRef& ref, Register base, Register index, byte scale) const {
+	Compiler::MemRef Compiler::ref(const SymRef& ref, Register base, Register index,
+								   byte scale) const {
 		if (index == ESP)
 			throw std::runtime_error("%esp cannot be an index");
 		else
@@ -225,7 +215,8 @@ namespace x86 {
 				if (reloc.type == RefAbs)
 					*reinterpret_cast<int*>(section(TEXT).data() + reloc.offset) += value;
 				else
-					*reinterpret_cast<int*>(section(TEXT).data() + reloc.offset) += value - reinterpret_cast<int>(section(TEXT).data() + reloc.offset + 4);
+					*reinterpret_cast<int*>(section(TEXT).data() + reloc.offset) +=
+						value - reinterpret_cast<int>(section(TEXT).data() + reloc.offset + 4);
 			}
 	}
 
@@ -651,7 +642,8 @@ namespace x86 {
 		strcat(header.name, ".data");
 		header.sizeOfRawData = sectionSize(DATA);
 		header.pointerToRawData = header.sizeOfRawData ? ptr : 0;
-		header.characteristics = IMAGE_SCN_MEM_WRITE | IMAGE_SCN_MEM_READ | IMAGE_SCN_CNT_INITIALIZED_DATA;
+		header.characteristics =
+			IMAGE_SCN_MEM_WRITE | IMAGE_SCN_MEM_READ | IMAGE_SCN_CNT_INITIALIZED_DATA;
 
 		ptr += header.sizeOfRawData;
 		sectionHeaders << header;
@@ -661,7 +653,8 @@ namespace x86 {
 		strcat(header.name, ".bss");
 		header.sizeOfRawData = sectionSize(BSS);
 		header.pointerToRawData = header.sizeOfRawData ? ptr : 0;
-		header.characteristics = IMAGE_SCN_MEM_WRITE | IMAGE_SCN_MEM_READ | IMAGE_SCN_CNT_UNINITIALIZED_DATA;
+		header.characteristics =
+			IMAGE_SCN_MEM_WRITE | IMAGE_SCN_MEM_READ | IMAGE_SCN_CNT_UNINITIALIZED_DATA;
 
 		ptr += header.sizeOfRawData;
 		sectionHeaders << header;
@@ -727,7 +720,9 @@ namespace x86 {
 			RelocationDirective dir = {};
 
 			dir.virtualAddress = reloc.offset;
-			dir.symbolIndex = find(symbolNames.begin(), symbolNames.end(), symbols.at(reloc.name).baseSymbol) - symbolNames.begin();
+			dir.symbolIndex =
+				find(symbolNames.begin(), symbolNames.end(), symbols.at(reloc.name).baseSymbol) -
+				symbolNames.begin();
 			dir.type = reloc.type == RefRel ? IMAGE_REL_I386_REL32 : IMAGE_REL_I386_DIR32;
 
 			textRelocs << dir;
@@ -738,13 +733,16 @@ namespace x86 {
 
 		image.push(fileHeader);
 
-		image.push(reinterpret_cast<byte*>(sectionHeaders.data()), sectionHeaders.size() * sizeof(SectionHeader));
+		image.push(reinterpret_cast<byte*>(sectionHeaders.data()),
+				   sectionHeaders.size() * sizeof(SectionHeader));
 
 		for (auto& section : sections)
 			image.push(section.second);
 
-		image.push(reinterpret_cast<byte*>(textRelocs.data()), textRelocs.size() * sizeof(RelocationDirective));
-		image.push(reinterpret_cast<byte*>(symbolTable.data()), symbolTable.size() * sizeof(SymbolTableEntry));
+		image.push(reinterpret_cast<byte*>(textRelocs.data()),
+				   textRelocs.size() * sizeof(RelocationDirective));
+		image.push(reinterpret_cast<byte*>(symbolTable.data()),
+				   symbolTable.size() * sizeof(SymbolTableEntry));
 
 		if (stringTableSize > 0) {
 			image.push(stringTableSize);
@@ -792,11 +790,11 @@ namespace x86 {
 
 		instr(op, ref.offset);
 
-		pushReloc({ ref.name, ref.type, sectionSize(TEXT) - 4 });
+		pushReloc({ref.name, ref.type, sectionSize(TEXT) - 4});
 	}
 
 	void Compiler::instr(byte op, byte reg, Register rm) {
-		instr(op, reg, { Reg, rm, 0, 0, 0, 0 });
+		instr(op, reg, {Reg, rm, 0, 0, 0, 0});
 	}
 
 	void Compiler::instr(byte op, byte reg, Register rm, byte imm) {
@@ -815,7 +813,7 @@ namespace x86 {
 
 		instr(op, reg, rm, ref.offset);
 
-		pushReloc({ ref.name, ref.type, sectionSize(TEXT) - 4 });
+		pushReloc({ref.name, ref.type, sectionSize(TEXT) - 4});
 	}
 
 	void Compiler::instr(byte op, byte reg, const MemRef& rm) {
@@ -828,14 +826,15 @@ namespace x86 {
 
 		if (rm.mod == Disp8)
 			gen(static_cast<byte>(rm.ref.offset));
-		else if (rm.mod == Disp32 || (rm.mod == Disp0 && (rm.rm == 5 || (rm.rm == 4 && rm.base == 5)))) {
+		else if (rm.mod == Disp32 ||
+				 (rm.mod == Disp0 && (rm.rm == 5 || (rm.rm == 4 && rm.base == 5)))) {
 			gen(rm.ref.offset);
 
 			if (!rm.ref.name.empty()) {
 				if (!isSymbolDefined(rm.ref.name))
 					pushSymbol(rm.ref.name, "", 0);
 
-				pushReloc({ rm.ref.name, rm.ref.type, sectionSize(TEXT) - 4 });
+				pushReloc({rm.ref.name, rm.ref.type, sectionSize(TEXT) - 4});
 			}
 		}
 	}
@@ -856,7 +855,7 @@ namespace x86 {
 
 		instr(op, reg, rm, ref.offset);
 
-		pushReloc({ ref.name, ref.type, sectionSize(TEXT) - 4 });
+		pushReloc({ref.name, ref.type, sectionSize(TEXT) - 4});
 	}
 
 	bool Compiler::isSectionDefined(SectionID id) const {
@@ -886,10 +885,10 @@ namespace x86 {
 		if (isSymbolDefined(name))
 			throw std::runtime_error("symbol '" + name + "' is already defined");
 
-		symbols[name] = Symbol{ baseSymbol, offset };
+		symbols[name] = Symbol {baseSymbol, offset};
 	}
 
 	void Compiler::pushReloc(const Reloc& reloc) {
 		relocs << reloc;
 	}
-}
+} // namespace x86

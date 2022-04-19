@@ -4,7 +4,8 @@ namespace x86 {
 
 	Function::Function() {}
 
-	Function::Function(Function&& f) : code(std::move(f.code)) {}
+	Function::Function(Function&& f)
+		: code(std::move(f.code)) {}
 
 	Function& Function::operator=(Function&& f) {
 		code = std::move(f.code);
@@ -15,15 +16,11 @@ namespace x86 {
 		int (*f)() = (int (*)())code.data();
 
 		for (int* i = &n + n; i > &n; i--)
-			asm("push %0"
-				:
-		: "g"(*i));
+			asm("push %0" : : "g"(*i));
 
 		int r = f();
 
-		asm("add %0, %%esp"
-			:
-		: "g"(n * sizeof(int)));
+		asm("add %0, %%esp" : : "g"(n * sizeof(int)));
 
 		return r;
 	}
@@ -34,15 +31,11 @@ namespace x86 {
 		const int* argsData = args.data();
 
 		for (int i = args.size() - 1; i >= 0; i--)
-			asm("push %0"
-				:
-		: "g"(argsData[i]));
+			asm("push %0" : : "g"(argsData[i]));
 
 		int r = f();
 
-		asm("add %0, %%esp"
-			:
-		: "g"(args.size() * sizeof(int)));
+		asm("add %0, %%esp" : : "g"(args.size() * sizeof(int)));
 
 		return r;
 	}
@@ -55,12 +48,17 @@ namespace x86 {
 		std::string result;
 
 		for (uint i = 0; i < code.size(); i++)
-			result += (i > 0 ? code[i] < 0x10 ? " 0" : " " : code[i] < 0x10 ? "0" : "") + toString((int)code[i], 0x10, 0);
+			result += (i > 0				? code[i] < 0x10 ? " 0" : " "
+						   : code[i] < 0x10 ? "0"
+											: "") +
+				toString((int)code[i], 0x10, 0);
 
 		return result;
 	}
 
-	Function::Function(const ByteArray& code) : code(code) {}
+	Function::Function(const ByteArray& code)
+		: code(code) {}
 
-	Function::Function(ByteArray&& code) : code(std::move(code)) {}
-}
+	Function::Function(ByteArray&& code)
+		: code(std::move(code)) {}
+} // namespace x86

@@ -12,7 +12,7 @@ namespace x86 {
 
 		ByteArray code;
 
-	public:
+	  public:
 		Function();
 
 		Function(Function&& f);
@@ -26,8 +26,8 @@ namespace x86 {
 
 		std::string dump();
 
-	private:
+	  private:
 		Function(const ByteArray& code);
 		Function(ByteArray&& code);
 	};
-}
+} // namespace x86
