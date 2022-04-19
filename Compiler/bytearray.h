@@ -13,12 +13,12 @@ class ByteArray {
 
 	ByteArray();
 
-	ByteArray(const ByteArray& array);
+	ByteArray(ByteArray const& array);
 	ByteArray(ByteArray&& array);
 
 	~ByteArray();
 
-	ByteArray& operator=(const ByteArray& array);
+	ByteArray& operator=(ByteArray const& array);
 	ByteArray& operator=(ByteArray&& array);
 
 	byte* allocate(uint count);
@@ -30,7 +30,7 @@ class ByteArray {
 	template <class T>
 	T pop();
 
-	void push(const byte* data, uint size);
+	void push(byte const* data, uint size);
 
 	byte& operator[](int index);
 
@@ -43,7 +43,7 @@ class ByteArray {
 	uint size() const;
 	uint capacity() const;
 
-	void write(const std::string& fileName) const;
+	void write(std::string const& fileName) const;
 };
 
 template <class T>
