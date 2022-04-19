@@ -14,7 +14,7 @@ ByteArray::ByteArray()
 	, capacity(0)
 	, data(0) {}
 
-ByteArray::ByteArray(const ByteArray& array)
+ByteArray::ByteArray(ByteArray const& array)
 	: data(0) {
 	*this = array;
 }
@@ -28,7 +28,7 @@ ByteArray::~ByteArray() {
 	release();
 }
 
-ByteArray& ByteArray::operator=(const ByteArray& array) {
+ByteArray& ByteArray::operator=(ByteArray const& array) {
 	size = array.size;
 	capacity = array.capacity;
 
@@ -89,7 +89,7 @@ int ByteArray::reallocate() {
 	return delta;
 }
 
-void ByteArray::push(const byte* data, uint size) {
+void ByteArray::push(byte const* data, uint size) {
 	memcpy(allocate(size), data, size);
 }
 
@@ -129,7 +129,7 @@ uint ByteArray::capacity() const {
 	return capacity;
 }
 
-void ByteArray::write(const std::string& fileName) const {
+void ByteArray::write(std::string const& fileName) const {
 	std::ofstream stream(fileName, std::ios::binary);
 	stream.write((char*)data, size);
 	stream.close();
