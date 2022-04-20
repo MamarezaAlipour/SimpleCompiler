@@ -20,14 +20,14 @@ namespace x86 {
 		Function& operator=(Function&& f);
 
 		int invoke(int n = 0, ...);
-		int invoke(const std::vector<int>& args);
+		int invoke(std::vector<int> const& args);
 
 		byte* getCode();
 
 		std::string dump();
 
 	  private:
-		Function(const ByteArray& code);
+		Function(ByteArray const& code);
 		Function(ByteArray&& code);
 	};
 } // namespace x86
