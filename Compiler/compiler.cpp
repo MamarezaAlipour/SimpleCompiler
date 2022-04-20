@@ -241,33 +241,33 @@ namespace x86 {
 			instr(0x81, 0, dst, imm);
 	}
 
-	void Compiler::add(const SymRef& ref, Register dst) {
+	void Compiler::add(SymRef const& ref, Register dst) {
 		if (dst == EAX)
 			instr(0x05, ref);
 		else
 			instr(0x81, 0, dst, ref);
 	}
 
-	void Compiler::addb(byte imm, const MemRef& dst) {
+	void Compiler::addb(byte imm, MemRef const& dst) {
 		instr(0x80, 0, dst, imm);
 	}
 
-	void Compiler::add(int imm, const MemRef& dst) {
+	void Compiler::add(int imm, MemRef const& dst) {
 		if (isByte(imm))
 			instr(0x83, 0, dst, static_cast<byte>(imm));
 		else
 			instr(0x81, 0, dst, imm);
 	}
 
-	void Compiler::add(const SymRef& ref, const MemRef& dst) {
+	void Compiler::add(SymRef const& ref, MemRef const& dst) {
 		instr(0x81, 0, dst, ref);
 	}
 
-	void Compiler::add(Register src, const MemRef& dst) {
+	void Compiler::add(Register src, MemRef const& dst) {
 		instr(0x01, src, dst);
 	}
 
-	void Compiler::add(const MemRef& src, Register dst) {
+	void Compiler::add(MemRef const& src, Register dst) {
 		instr(0x03, dst, src);
 	}
 
@@ -282,7 +282,7 @@ namespace x86 {
 		instr(0xe8, disp);
 	}
 
-	void Compiler::call(const SymRef& ref) {
+	void Compiler::call(SymRef const& ref) {
 		instr(0xe8, ref);
 	}
 
@@ -290,15 +290,15 @@ namespace x86 {
 		instr(0xff, 2, reg);
 	}
 
-	void Compiler::call(const MemRef& ref) {
+	void Compiler::call(MemRef const& ref) {
 		instr(0xff, 2, ref);
 	}
 
-	void Compiler::fadds(const MemRef& ref) {
+	void Compiler::fadds(MemRef const& ref) {
 		instr(0xd8, 0, ref);
 	}
 
-	void Compiler::faddl(const MemRef& ref) {
+	void Compiler::faddl(MemRef const& ref) {
 		instr(0xdc, 0, ref);
 	}
 
@@ -319,15 +319,15 @@ namespace x86 {
 		instr(0xde, static_cast<byte>(0xc1));
 	}
 
-	void Compiler::fiaddl(const MemRef& ref) {
+	void Compiler::fiaddl(MemRef const& ref) {
 		instr(0xda, 0, ref);
 	}
 
-	void Compiler::fdivs(const MemRef& ref) {
+	void Compiler::fdivs(MemRef const& ref) {
 		instr(0xd8, 6, ref);
 	}
 
-	void Compiler::fdivl(const MemRef& ref) {
+	void Compiler::fdivl(MemRef const& ref) {
 		instr(0xdc, 6, ref);
 	}
 
@@ -348,15 +348,15 @@ namespace x86 {
 		instr(0xde, static_cast<byte>(0xf1));
 	}
 
-	void Compiler::fidivl(const MemRef& ref) {
+	void Compiler::fidivl(MemRef const& ref) {
 		instr(0xda, 6, ref);
 	}
 
-	void Compiler::fdivrs(const MemRef& ref) {
+	void Compiler::fdivrs(MemRef const& ref) {
 		instr(0xd8, 7, ref);
 	}
 
-	void Compiler::fdivrl(const MemRef& ref) {
+	void Compiler::fdivrl(MemRef const& ref) {
 		instr(0xdc, 7, ref);
 	}
 
@@ -377,15 +377,15 @@ namespace x86 {
 		instr(0xde, static_cast<byte>(0xf9));
 	}
 
-	void Compiler::fidivrl(const MemRef& ref) {
+	void Compiler::fidivrl(MemRef const& ref) {
 		instr(0xda, 7, ref);
 	}
 
-	void Compiler::flds(const MemRef& ref) {
+	void Compiler::flds(MemRef const& ref) {
 		instr(0xd9, 0, ref);
 	}
 
-	void Compiler::fldl(const MemRef& ref) {
+	void Compiler::fldl(MemRef const& ref) {
 		instr(0xdd, 0, ref);
 	}
 
@@ -393,11 +393,11 @@ namespace x86 {
 		instr(0xd9, static_cast<byte>(0xc0 + reg));
 	}
 
-	void Compiler::fmuls(const MemRef& ref) {
+	void Compiler::fmuls(MemRef const& ref) {
 		instr(0xd8, 1, ref);
 	}
 
-	void Compiler::fmull(const MemRef& ref) {
+	void Compiler::fmull(MemRef const& ref) {
 		instr(0xdc, 1, ref);
 	}
 
@@ -418,15 +418,15 @@ namespace x86 {
 		instr(0xde, static_cast<byte>(0xc9));
 	}
 
-	void Compiler::fimull(const MemRef& ref) {
+	void Compiler::fimull(MemRef const& ref) {
 		instr(0xda, 1, ref);
 	}
 
-	void Compiler::fsts(const MemRef& ref) {
+	void Compiler::fsts(MemRef const& ref) {
 		instr(0xd9, 2, ref);
 	}
 
-	void Compiler::fstl(const MemRef& ref) {
+	void Compiler::fstl(MemRef const& ref) {
 		instr(0xdd, 2, ref);
 	}
 
@@ -434,11 +434,11 @@ namespace x86 {
 		instr(0xdd, static_cast<byte>(0xd0 + reg));
 	}
 
-	void Compiler::fstps(const MemRef& ref) {
+	void Compiler::fstps(MemRef const& ref) {
 		instr(0xd9, 3, ref);
 	}
 
-	void Compiler::fstpl(const MemRef& ref) {
+	void Compiler::fstpl(MemRef const& ref) {
 		instr(0xdd, 3, ref);
 	}
 
@@ -446,11 +446,11 @@ namespace x86 {
 		instr(0xdd, static_cast<byte>(0xd8 + reg));
 	}
 
-	void Compiler::fsubs(const MemRef& ref) {
+	void Compiler::fsubs(MemRef const& ref) {
 		instr(0xd8, 4, ref);
 	}
 
-	void Compiler::fsubl(const MemRef& ref) {
+	void Compiler::fsubl(MemRef const& ref) {
 		instr(0xdc, 4, ref);
 	}
 
@@ -471,15 +471,15 @@ namespace x86 {
 		instr(0xde, static_cast<byte>(0xe1));
 	}
 
-	void Compiler::fisubl(const MemRef& ref) {
+	void Compiler::fisubl(MemRef const& ref) {
 		instr(0xda, 4, ref);
 	}
 
-	void Compiler::fsubrs(const MemRef& ref) {
+	void Compiler::fsubrs(MemRef const& ref) {
 		instr(0xd8, 5, ref);
 	}
 
-	void Compiler::fsubrl(const MemRef& ref) {
+	void Compiler::fsubrl(MemRef const& ref) {
 		instr(0xdc, 5, ref);
 	}
 
@@ -500,11 +500,11 @@ namespace x86 {
 		instr(0xde, static_cast<byte>(0xe9));
 	}
 
-	void Compiler::fisubrl(const MemRef& ref) {
+	void Compiler::fisubrl(MemRef const& ref) {
 		instr(0xda, 5, ref);
 	}
 
-	void Compiler::lea(const MemRef& src, Register dst) {
+	void Compiler::lea(MemRef const& src, Register dst) {
 		instr(0x8d, dst, src);
 	}
 
@@ -520,23 +520,23 @@ namespace x86 {
 		instr(0xb8 + dst, imm);
 	}
 
-	void Compiler::mov(const SymRef& src, Register dst) {
+	void Compiler::mov(SymRef const& src, Register dst) {
 		instr(0xb8 + dst, src);
 	}
 
-	void Compiler::mov(int imm, const MemRef& dst) {
+	void Compiler::mov(int imm, MemRef const& dst) {
 		instr(0xc7, 0, dst, imm);
 	}
 
-	void Compiler::mov(const SymRef& ref, const MemRef& dst) {
+	void Compiler::mov(SymRef const& ref, MemRef const& dst) {
 		instr(0xc7, 0, dst, ref);
 	}
 
-	void Compiler::mov(Register src, const MemRef& dst) {
+	void Compiler::mov(Register src, MemRef const& dst) {
 		instr(0x89, src, dst);
 	}
 
-	void Compiler::mov(const MemRef& src, Register dst) {
+	void Compiler::mov(MemRef const& src, Register dst) {
 		instr(0x8b, dst, src);
 	}
 
