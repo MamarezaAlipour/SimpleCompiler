@@ -548,7 +548,7 @@ namespace x86 {
 		instr(0x58 + reg);
 	}
 
-	void Compiler::pop(const MemRef& ref) {
+	void Compiler::pop(MemRef const& ref) {
 		instr(0x8f, 0, ref);
 	}
 
@@ -556,7 +556,7 @@ namespace x86 {
 		instr(0x50 + reg);
 	}
 
-	void Compiler::push(const MemRef& ref) {
+	void Compiler::push(MemRef const& ref) {
 		instr(0xff, 6, ref);
 	}
 
@@ -567,7 +567,7 @@ namespace x86 {
 			instr(0x68, value);
 	}
 
-	void Compiler::push(const SymRef& ref) {
+	void Compiler::push(SymRef const& ref) {
 		instr(0x68, ref);
 	}
 
@@ -584,33 +584,33 @@ namespace x86 {
 			instr(0x81, 5, dst, imm);
 	}
 
-	void Compiler::sub(const SymRef& ref, Register dst) {
+	void Compiler::sub(SymRef const& ref, Register dst) {
 		if (dst == EAX)
 			instr(0x2d, ref);
 		else
 			instr(0x81, 5, dst, ref);
 	}
 
-	void Compiler::subb(byte imm, const MemRef& dst) {
+	void Compiler::subb(byte imm, MemRef const& dst) {
 		instr(0x80, 5, dst, imm);
 	}
 
-	void Compiler::sub(int imm, const MemRef& dst) {
+	void Compiler::sub(int imm, MemRef const& dst) {
 		if (isByte(imm))
 			instr(0x83, 5, dst, static_cast<byte>(imm));
 		else
 			instr(0x81, 5, dst, imm);
 	}
 
-	void Compiler::sub(const SymRef& ref, const MemRef& dst) {
+	void Compiler::sub(SymRef const& ref, MemRef const& dst) {
 		instr(0x81, 5, dst, ref);
 	}
 
-	void Compiler::sub(Register src, const MemRef& dst) {
+	void Compiler::sub(Register src, MemRef const& dst) {
 		instr(0x29, src, dst);
 	}
 
-	void Compiler::sub(const MemRef& src, Register dst) {
+	void Compiler::sub(MemRef const& src, Register dst) {
 		instr(0x2b, dst, src);
 	}
 
@@ -678,7 +678,7 @@ namespace x86 {
 		uint stringTableSize = 0;
 		ByteArray stringTable;
 
-		for (const std::string& func : funcs) {
+		for (std::string const& func : funcs) {
 			SymbolTableEntry entry = {};
 
 			strcat(entry.e.name, ("_" + func).data());
@@ -704,7 +704,7 @@ namespace x86 {
 			symbolNames << entry.e.name;
 		}
 
-		for (const std::string& func : externFuncs) {
+		for (std::string const& func : externFuncs) {
 			SymbolTableEntry entry = {};
 
 			strcat(entry.e.name, ("_" + func).data());
@@ -757,7 +757,7 @@ namespace x86 {
 		return image;
 	}
 
-	ByteArray Compiler::writeDLL(const std::string& /*name*/) const {
+	ByteArray Compiler::writeDLL(std::string const& /*name*/) const {
 		ByteArray image;
 		return image;
 	}
@@ -784,7 +784,7 @@ namespace x86 {
 		gen(imm);
 	}
 
-	void Compiler::instr(byte op, const SymRef& ref) {
+	void Compiler::instr(byte op, SymRef const& ref) {
 		if (!isSymbolDefined(ref.name))
 			pushSymbol(ref.name, "", 0);
 
@@ -807,7 +807,7 @@ namespace x86 {
 		gen(imm);
 	}
 
-	void Compiler::instr(byte op, byte reg, Register rm, const SymRef& ref) {
+	void Compiler::instr(byte op, byte reg, Register rm, SymRef const& ref) {
 		if (!isSymbolDefined(ref.name))
 			pushSymbol(ref.name, "", 0);
 
@@ -816,7 +816,7 @@ namespace x86 {
 		pushReloc({ref.name, ref.type, sectionSize(TEXT) - 4});
 	}
 
-	void Compiler::instr(byte op, byte reg, const MemRef& rm) {
+	void Compiler::instr(byte op, byte reg, MemRef const& rm) {
 		gen(op);
 
 		gen(composeByte(rm.mod, reg, rm.rm));
@@ -839,17 +839,17 @@ namespace x86 {
 		}
 	}
 
-	void Compiler::instr(byte op, byte reg, const MemRef& rm, byte imm) {
+	void Compiler::instr(byte op, byte reg, MemRef const& rm, byte imm) {
 		instr(op, reg, rm);
 		gen(imm);
 	}
 
-	void Compiler::instr(byte op, byte reg, const MemRef& rm, int imm) {
+	void Compiler::instr(byte op, byte reg, MemRef const& rm, int imm) {
 		instr(op, reg, rm);
 		gen(imm);
 	}
 
-	void Compiler::instr(byte op, byte reg, const MemRef& rm, const SymRef& ref) {
+	void Compiler::instr(byte op, byte reg, MemRef const& rm, SymRef const& ref) {
 		if (!isSymbolDefined(ref.name))
 			pushSymbol(ref.name, "", 0);
 
@@ -877,18 +877,18 @@ namespace x86 {
 		return sections.at(id);
 	}
 
-	bool Compiler::isSymbolDefined(const std::string& name) const {
+	bool Compiler::isSymbolDefined(std::string const& name) const {
 		return symbols.find(name) != symbols.end();
 	}
 
-	void Compiler::pushSymbol(const std::string& name, const std::string& baseSymbol, uint offset) {
+	void Compiler::pushSymbol(std::string const& name, std::string const& baseSymbol, uint offset) {
 		if (isSymbolDefined(name))
 			throw std::runtime_error("symbol '" + name + "' is already defined");
 
 		symbols[name] = Symbol {baseSymbol, offset};
 	}
 
-	void Compiler::pushReloc(const Reloc& reloc) {
+	void Compiler::pushReloc(Reloc const& reloc) {
 		relocs << reloc;
 	}
 } // namespace x86
