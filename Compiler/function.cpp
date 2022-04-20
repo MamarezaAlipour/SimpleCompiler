@@ -25,7 +25,7 @@ namespace x86 {
 		return r;
 	}
 
-	int Function::invoke(const std::vector<int>& args) {
+	int Function::invoke(std::vector<int> const& args) {
 		int (*f)() = (int (*)())code.data();
 
 		const int* argsData = args.data();
@@ -56,7 +56,7 @@ namespace x86 {
 		return result;
 	}
 
-	Function::Function(const ByteArray& code)
+	Function::Function(ByteArray const& code)
 		: code(code) {}
 
 	Function::Function(ByteArray&& code)
